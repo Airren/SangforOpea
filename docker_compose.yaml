@@ -1,0 +1,27 @@
+version: '3'
+services:
+  llm_service:
+    image: ${DOCKER_IMAGE}
+    container_name: ${CONTAINER_NAME}
+    environment:
+      - GPU_TYPE=IntelArc
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: gpu
+              count: 1
+              capabilities: ["gpu"]
+    devices:
+      - /dev/dri
+    group_add:
+      - "video"
+    volumes:
+      - ${MODEL_PATH}:/llm/models
+    shm_size: "16g"
+    mem_limit: "32g"
+    network_mode: "host"
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    restart: always
