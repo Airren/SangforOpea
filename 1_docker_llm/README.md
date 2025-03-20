@@ -100,7 +100,10 @@ bash start_llm.sh
 
 ### 3.1 使用 cURL 进行简单接口验证
 
-将模型服务启动后(大约需要30s)，可以使用 cURL 发送请求，验证服务是否正常。
+将模型服务启动后，可以使用 cURL 发送请求，验证服务是否正常。
+
+> 启动时间大学需要30s，可以通过 `docker logs <container_id/name>` 查看日志。
+> 如果出现 `INFO:     Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)`，说明服务正常启动
 
 ```bash
   curl http://localhost:9009/v1/completions \
@@ -115,7 +118,7 @@ bash start_llm.sh
 如果请求失败，排查日志：
 
 ```bash
-docker logs <container_id>
+docker logs <container_id/name>
 ```
 
 ### **注意事项**
