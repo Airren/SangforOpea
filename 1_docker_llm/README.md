@@ -100,7 +100,7 @@ bash start_llm.sh
 
 ### 3.1 使用 cURL 进行简单接口验证
 
-将模型服务启动后，可以使用 cURL 发送请求，验证服务是否正常。
+将模型服务启动后(大约需要30s)，可以使用 cURL 发送请求，验证服务是否正常。
 
 ```bash
   curl http://localhost:9009/v1/completions \
