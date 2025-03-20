@@ -91,6 +91,7 @@ bash start_llm.sh
 ### **注意事项**
 
 - docker image load 可能会花费较长时间🕐🕐🕐，请耐心等待。
+- ❗️服务默认暴露在了9009端口，请确保端口不被占用，如需修改，请修改`compose.yaml`中的端口映射。
 - 在容器内确认 GPU 可见：`docker exec -it <container_id> bash -c "ls /dev/dri"`。
 
 ---
