@@ -1,5 +1,7 @@
 # Intel Arc GPU 离线部署大语言模型指南
 
+本指南介绍了如何在docker环境下使用Intel Arc GPU离线部署大预言大语言模型提供inference服务.
+
 ## 前置条件
 
 - **操作系统**：Ubuntu 24.04 (x86_64)
@@ -20,21 +22,23 @@ tar -xvf Intel_Arc_LLM_Offline_Deployment.tar.gz
 
 ```
 
-## **第一步：离线部署安装 Docker**
+## **第一步：离线部署安装 Docker** (可跳过)
+
+请使用[Docker engine community version](https://docs.docker.com/engine/install). 如果系统里已经安装有其他版本docker，请先卸载旧版本的docker，再安装Docker engine community version.
 
 ### 1.1 离线安装 Docker
 
 将文件传输到目标机器，执行安装：
 
 ```bash
-cd Intel_Arc_LLM_Offline_Deployment/1_docker_llm
+cd SangforOpea/1_docker_llm
 bash install_docker.sh
 ```
 
 ### 1.2 可以手动验证 Docker (可跳过)
 
 ```bash
-sudo docker --version
+sudo docker version
 sudo docker compose version
 ```
 
@@ -82,7 +86,18 @@ export LLM_MODEL_ID=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
 export QUANTIZATION=fp8
 ```
 
-### 2.2 加载离线镜像并启动LLM服务
+### 2.2 加载离线docker 容器镜像
+
+```bash
+bash load_docker_images.sh
+```
+
+#### **注意事项**
+- 此步骤只需执行一次
+- docker image load 可能会花费较长时间🕐🕐🕐，请耐心等待。
+
+
+### 2.3 启动LLM服务
 
 ```bash
 bash start_llm.sh
@@ -90,7 +105,6 @@ bash start_llm.sh
 
 ### **注意事项**
 
-- docker image load 可能会花费较长时间🕐🕐🕐，请耐心等待。
 - ❗️服务默认暴露在了9009端口，请确保端口不被占用，如需修改，请修改`compose.yaml`中的端口映射。
 - 在容器内确认 GPU 可见：`docker exec -it <container_id> bash -c "ls /dev/dri"`。
 
@@ -98,12 +112,22 @@ bash start_llm.sh
 
 ## **第三步：验证 LLM 服务**
 
-### 3.1 使用 cURL 进行简单接口验证
+### 3.1 等待LLM服务启动完成
+
+```bash
+source setenv.sh
+sudo -E docker compose ps
+```
+
+请等待vllm_service为healthy状态.
+
+> 根据所选模型的不同，启动时间不等，可以通过 `sudo -E docker compose logs vllm-service` 查看日志。
+> 如果出现 `INFO:     Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)`，说明服务正常启动
+
+### 3.2 使用 cURL 进行简单接口验证
 
 将模型服务启动后，可以使用 cURL 发送请求，验证服务是否正常。
 
-> 启动时间大学需要30s，可以通过 `docker logs <container_id/name>` 查看日志。
-> 如果出现 `INFO:     Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)`，说明服务正常启动
 
 ```bash
   curl http://localhost:9009/v1/completions \
@@ -118,7 +142,14 @@ bash start_llm.sh
 如果请求失败，排查日志：
 
 ```bash
-docker logs <container_id/name>
+source setenv.sh
+sudo -E docker compose logs vllm-service
+```
+
+### 3.3 停止LLM服务
+
+```bash
+bash stop_llm.sh
 ```
 
 ### **注意事项**
