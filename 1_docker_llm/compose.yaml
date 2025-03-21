@@ -24,7 +24,7 @@ services:
       MAX_NUM_SEQS: ${MAX_NUM_SEQS:-256}
       TENSOR_PARALLEL_SIZE: ${TENSOR_PARALLEL_SIZE:-1}
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://$host_ip:9009/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:80/health || exit 1" ]
       interval: 10s
       timeout: 10s
       retries: 100
