@@ -1,0 +1,9 @@
+dependencies:
+- name: tgi
+  repository: file://../tgi
+  version: 0-latest
+- name: lvm-serve
+  repository: file://../lvm-serve
+  version: 0-latest
+digest: sha256:e53d79bdd3b7b425177c63fb1f1ec28fcd0e615cc75531c72825b4722783a05b
+generated: "2025-03-25T05:43:57.073304519Z"

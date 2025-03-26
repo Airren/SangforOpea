@@ -1,0 +1,18 @@
+dependencies:
+- name: tei
+  repository: file://../tei
+  version: 0-latest
+- name: redis-vector-db
+  repository: file://../redis-vector-db
+  version: 0-latest
+- name: milvus
+  repository: https://zilliztech.github.io/milvus-helm/
+  version: 4.2.12
+- name: qdrant
+  repository: https://qdrant.github.io/qdrant-helm
+  version: 1.13.1
+- name: commonlib
+  repository: file://../commonlib
+  version: 0-latest
+digest: sha256:6ba01fcb46c4a1b5855fa9157e848b154f8c9665c2258ad6d20292106521374b
+generated: "2025-03-25T05:43:45.076915745Z"

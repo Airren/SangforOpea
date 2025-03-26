@@ -1,0 +1,6 @@
+dependencies:
+- name: speecht5
+  repository: file://../speecht5
+  version: 0-latest
+digest: sha256:97d6888add2f6887551ce9367feeca0d6840b318762b30fbfce2b20f39871022
+generated: "2025-03-25T05:44:11.190189611Z"

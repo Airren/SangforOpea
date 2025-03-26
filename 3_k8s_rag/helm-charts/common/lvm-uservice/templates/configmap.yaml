@@ -1,0 +1,49 @@
+# Copyright (C) 2024 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "lvm-uservice.fullname" . }}-config
+  labels:
+    {{- include "lvm-uservice.labels" . | nindent 4 }}
+data:
+  {{- if eq "TGI" .Values.LVM_BACKEND }}
+  LVM_COMPONENT_NAME: "OPEA_TGI_LLAVA_LVM"
+  MAX_IMAGES: {{ .Values.MAX_IMAGES | default 1 | quote }}
+  {{- if not .Values.LVM_ENDPOINT }}
+  LVM_ENDPOINT: "http://{{ .Release.Name }}-tgi"
+  {{- end }}
+  {{- else }}
+  {{- if not .Values.LVM_ENDPOINT }}
+  LVM_ENDPOINT: "http://{{ .Release.Name }}-lvm-serve"
+  {{- end }}
+  {{- if eq "LLaVA" .Values.LVM_BACKEND }}
+  LVM_COMPONENT_NAME: "OPEA_LLAVA_LVM"
+  MAX_IMAGES: {{ .Values.MAX_IMAGES | default 1 | quote }}
+  {{- else if eq "VideoLlama" .Values.LVM_BACKEND }}
+  LVM_COMPONENT_NAME: "OPEA_VIDEO_LLAMA_LVM"
+  {{- else if eq "LlamaVision" .Values.LVM_BACKEND }}
+  LVM_COMPONENT_NAME: "OPEA_LLAMA_VISION_LVM"
+  {{- else if eq "PredictionGuard" .Values.LVM_BACKEND }}
+  LVM_COMPONENT_NAME: "OPEA_PREDICTION_GUARD_LVM"
+  {{- else }}
+  {{- cat "Invalid LVM_BACKEND:" .Values.LVM_BACKEND | fail }}
+  {{- end }}
+  {{- end }}
+  {{- if .Values.LVM_ENDPOINT }}
+  LVM_ENDPOINT: {{ tpl .Values.LVM_ENDPOINT . | quote}}
+  {{- end }}
+  HF_TOKEN: {{ .Values.global.HUGGINGFACEHUB_API_TOKEN | quote}}
+  HF_HOME: "/tmp/.cache/huggingface"
+  {{- if .Values.global.HF_ENDPOINT }}
+  HF_ENDPOINT: {{ .Values.global.HF_ENDPOINT | quote}}
+  {{- end }}
+  http_proxy: {{ .Values.global.http_proxy | quote }}
+  https_proxy: {{ .Values.global.https_proxy | quote }}
+  {{- if and (not .Values.LVM_ENDPOINT) (or .Values.global.http_proxy .Values.global.https_proxy) }}
+  no_proxy: "{{ .Release.Name }}-tgi,{{ .Release.Name }}-lvm-serve,{{ .Values.global.no_proxy }}"
+  {{- else }}
+  no_proxy: {{ .Values.global.no_proxy | quote }}
+  {{- end }}
+  LOGFLAG: {{ .Values.LOGFLAG | quote }}

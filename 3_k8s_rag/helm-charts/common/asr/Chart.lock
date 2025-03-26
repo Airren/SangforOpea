@@ -1,0 +1,6 @@
+dependencies:
+- name: whisper
+  repository: file://../whisper
+  version: 0-latest
+digest: sha256:3b1bb454bcc71fedc8b4bb10dbc8199dfd43aa7b73658e61934d38c78e30d3ad
+generated: "2025-03-25T05:43:41.151379971Z"

@@ -1,0 +1,9 @@
+dependencies:
+- name: teirerank
+  repository: file://../teirerank
+  version: 0-latest
+- name: commonlib
+  repository: file://../commonlib
+  version: 0-latest
+digest: sha256:26756ca49af02103116249bf7927bb1ce7c18ad1171daf34f45578a9ccb8a7c2
+generated: "2025-03-25T05:43:58.367128873Z"

@@ -1,0 +1,163 @@
+# Copyright (C) 2024 Intel Corporation
+# SPDX-License-Identifier: Apache-2.0
+
+# Default values for chatqna.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: opea/chatqna
+  # Uncomment the following line to set desired image pull policy if needed, as one of Always, IfNotPresent, Never.
+  # pullPolicy: ""
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  runAsUser: 1000
+  capabilities:
+    drop:
+    - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+port: 8888
+service:
+  type: ClusterIP
+  port: 8888
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# This is just to avoid Helm errors when HPA is NOT used
+# (use hpa-values.yaml files to actually enable HPA).
+autoscaling:
+  enabled: false
+
+# Optional subcharts enablement and subcharts settings overwritten
+# LLM choice, tgi by default.
+tgi:
+  enabled: false
+  LLM_MODEL_ID: meta-llama/Meta-Llama-3-8B-Instruct
+vllm:
+  enabled: true
+  LLM_MODEL_ID: meta-llama/Meta-Llama-3-8B-Instruct
+  shmSize: 128Gi
+  VLLM_TORCH_PROFILER_DIR: "/tmp/vllm_profile"
+ipexllm:
+  enabled: false
+  LLM_MODEL_ID: meta-llama/Meta-Llama-3-8B-Instruct
+data-prep:
+  # the following are for redis-vector-db
+  DATAPREP_BACKEND: "REDIS"
+  INDEX_NAME: "rag-redis"
+  # the following are for qdrant db
+  COLLECTION_NAME: "rag-qdrant"
+  QDRANT_PORT: 6333
+retriever-usvc:
+  # the following are for redis-vector-db
+  RETRIEVER_BACKEND: "REDIS"
+  INDEX_NAME: "rag-redis"
+  # the following are for qdrant db
+  QDRANT_INDEX_NAME: "rag-qdrant"
+  QDRANT_PORT: 6333
+
+
+# disable guardrails by default
+# See guardrails-values.yaml for guardrail related options
+guardrails-usvc:
+  enabled: false
+tgi-guardrails:
+  enabled: false
+
+# reranking
+teirerank:
+  enabled: true
+
+# vector db choice
+# redis by default.
+redis-vector-db:
+  enabled: true
+# qdrant, disabled by default
+qdrant:
+  enabled: false
+  tag: "v1.13.1"
+  config:
+    cluster:
+      enabled: false
+
+# Microservice layer, disabled by default
+llm-uservice:
+  enabled: false
+  TEXTGEN_BACKEND: "vLLM"
+  LLM_MODEL_ID: meta-llama/Meta-Llama-3-8B-Instruct
+embedding-usvc:
+  enabled: false
+  EMBEDDING_BACKEND: "TEI"
+reranking-usvc:
+  enabled: false
+  RERANK_BACKEND: "TEI"
+
+nginx:
+  service:
+    type: NodePort
+
+# Uncomment the following lines
+chatqna-ui:
+  image:
+    repository: opea/chatqna-ui
+    tag: "latest"
+  containerPort: "5173"
+
+dashboard:
+  prefix: "OPEA ChatQnA"
+
+global:
+  http_proxy: ""
+  https_proxy: ""
+  no_proxy: ""
+  HUGGINGFACEHUB_API_TOKEN: "insert-your-huggingface-token-here"
+  # service account name to be shared with all parent/child charts.
+  # If set, it will overwrite serviceAccount.name.
+  # If set, and serviceAccount.create is false, it will assume this service account is already created by others.
+  sharedSAName: "chatqna"
+  # set modelUseHostPath or modelUsePVC to use model cache.
+  modelUseHostPath: ""
+  # modelUseHostPath: /mnt/opea-models
+  # modelUsePVC: model-volume
+
+  # Prometheus monitoring + Grafana dashboard(s) for service components?
+  monitoring: false
+
+  # Prometheus/Grafana namespace for Dashboard installation
+  prometheusNamespace: monitoring
+
+  # Prometheus Helm install release name needed for serviceMonitors
+  prometheusRelease: prometheus-stack

@@ -1,0 +1,6 @@
+dependencies:
+- name: tei
+  repository: file://../tei
+  version: 0-latest
+digest: sha256:54b6fd2ab08b4808a9572efa4273001ebe566b2a5ac58011a7450e2486d271d7
+generated: "2025-03-25T05:44:11.677428032Z"

@@ -1,0 +1,12 @@
+dependencies:
+- name: tei
+  repository: file://../tei
+  version: 0-latest
+- name: mm-embedding
+  repository: file://../mm-embedding
+  version: 0-latest
+- name: commonlib
+  repository: file://../commonlib
+  version: 0-latest
+digest: sha256:6f75fd7ace9e3ebd76c474a0a75e9c81def4a5b215c4c9097435ee321b71fd74
+generated: "2025-03-25T05:43:56.043664823Z"
