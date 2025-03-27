@@ -1,4 +1,4 @@
-# Intel Arc GPU 离线部署OPEA ChatQnA指南
+# Intel Arc GPU 离线部署OPEA ChatQnA指南(K8s)
 
 本指南介绍了如何在Kubernets(K8s)环境下使用Intel Arc GPU离线部署[OPEA ChatQnA](https://github.com/opea-project/GenAIExamples/tree/v1.2rc/ChatQnA).
 

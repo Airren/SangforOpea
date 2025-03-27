@@ -10,5 +10,5 @@ docker.io/calico/kube-controllers:v3.29.3
 docker.io/calico/node:v3.29.3
 intel/intel-gpu-plugin:0.32.0
 registry.k8s.io/nfd/node-feature-discovery:v0.17.1
-nicolaka/netshoot:latest
+nicolaka/netshoot:v0.13
 lianhao/intel-opencl-icd:0.32.0

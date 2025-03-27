@@ -508,7 +508,7 @@ function download_k8s_pkg() {
   cat $PKGDIR/calico.yaml | grep 'image: ' | sort -u | awk '{ print $2 }' | tee -a "${IMGLIST}"
   echo "Generate image list used by GPU device plugin ..."
   cat $PKGDIR/intel-device-plugins-for-kubernetes-*-${GPUDEV_PLUGIN_VER}.yaml | grep 'image: ' | sort -u | awk '{ print $2 }' | tee -a "${IMGLIST}"
-  echo "nicolaka/netshoot:latest" >> "${IMGLIST}"
+  echo "nicolaka/netshoot:v0.13" >> "${IMGLIST}"
   echo "lianhao/intel-opencl-icd:0.32.0" >> "${IMGLIST}"
   echo "Image list is succesfully generated at ${IMGLIST}."
 }
