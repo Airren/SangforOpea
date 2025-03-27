@@ -1,0 +1,9 @@
+dependencies:
+- name: tgi
+  repository: file://../tgi
+  version: 0-latest
+- name: commonlib
+  repository: file://../commonlib
+  version: 0-latest
+digest: sha256:5b37fa9ed11b059df3d86d2aeb59c93784e05f6f408ce7322a2cae742b45edcc
+generated: "2025-03-25T05:43:56.369743631Z"
