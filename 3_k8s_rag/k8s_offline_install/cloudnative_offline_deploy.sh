@@ -504,6 +504,10 @@ function download_k8s_pkg() {
   echo "Generate image list used by kubeadm ..."
   chmod +x $PKGDIR/kubeadm
   $PKGDIR/kubeadm config images list | tee "${IMGLIST}"
+  echo "registry.k8s.io/kube-apiserver:v${K8S_VER}" | tee -a "${IMGLIST}"
+  echo "registry.k8s.io/kube-controller-manager:v${K8S_VER}" | tee -a "${IMGLIST}"
+  echo "registry.k8s.io/kube-scheduler:v${K8S_VER}" | tee -a "${IMGLIST}"
+  echo "registry.k8s.io/registry.k8s.io/kube-proxy:v${K8S_VER}" | tee -a "${IMGLIST}"
   echo "Generate image list used by cni_calico ..."
   cat $PKGDIR/calico.yaml | grep 'image: ' | sort -u | awk '{ print $2 }' | tee -a "${IMGLIST}"
   echo "Generate image list used by GPU device plugin ..."

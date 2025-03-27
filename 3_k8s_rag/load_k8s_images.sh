@@ -7,12 +7,12 @@ echo "👩‍ Loading images from local file"
 
 if ! command -v nerdctl 2>&1 >/dev/null
 then
-  ${SCRIPT_DIR}/cloudnative_offline_deploy.sh -a _install_pkg_nerdctl
+  ${SCRIPT_DIR}/k8s_offline_install/cloudnative_offline_deploy.sh -a _install_pkg_nerdctl
 fi
 
 if ! command -v helm 2>&1 >/dev/null
 then
-  ${SCRIPT_DIR}/cloudnative_offline_deploy.sh -a _install_pkg_helm
+  ${SCRIPT_DIR}/k8s_offline_install/cloudnative_offline_deploy.sh -a _install_pkg_helm
 fi
 
 ls $IMGDIR | while read image_file; do
