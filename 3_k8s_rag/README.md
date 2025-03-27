@@ -29,7 +29,7 @@ cd SangforOpea/3_K8s_rag
 
 ## **第二步: 安装Kubernetes**
 
-如果已经安装了Kubernetes(K8s),可跳过此步骤。否则参见[K8s离线安装指南](K8s_offline_install/README.md)
+如果已经安装了Kubernetes(K8s),可跳过此步骤。否则参见[K8s离线安装指南](k8s_offline_install/README.md)
 
 ## **第三步: 导入容器镜像**
 

@@ -23,6 +23,8 @@ images=(
 "intel/intel-gpu-plugin:0.32.0"
 "lianhao/intel-opencl-icd:0.32.0"
 "busybox:1.36"
+"python:3.10.14"
+"python:3.10"
 )
 
 function _download_image() {
