@@ -1,19 +1,108 @@
+# Ubuntu 22.04 Kernel 升级与 Arc GPU 驱动安装
 
-# Intel Arc GPU 系统安装
+> [!IMPORTANT]
+> 为了保证Arc GPU可以发挥最佳性能，请严格按照文档说明准备安装部署环境。
+> 
 
-## BIOS 设置
+[TOC]
 
-Intel Arc GPU要求配置BIOS打开`PCIe resizable BAR`的支持.
+## 0. 服务器硬件要求以及BIOS设置
 
-## 选项1: 在线安装操作系统和GPU驱动
+- **CPU**: Xeon 4th/5th CPU
+- **BIOS**: 启用 `Resizable BAR` 功能
 
-为了发挥Intel Arc GPU的最大性能，推荐安装如下版本的操作系统，内核，以及GPU驱动：
+---
 
-- 操作系统: [Ubuntu 22.04.1](https://old-releases.ubuntu.com/releases/22.04.1/ubuntu-22.04.1-desktop-amd64.iso)
+> 请根据实际的网络情况选择安装方式，离线状态下可以选择 `选项1`，`选项3`.
 
-- 内核: 6.8.0-49-generic
+## 选项1:  使用Intel提供的安装包升级Kernel以及Driver安装(离线场景)
 
-- GPU驱动: 请使用如下指令安装GPU驱动
+### 1. 操作系统准备
+
+安装操作系统：Ubuntu 22.04.1 (x86_64)。
+
+> **注意：** 请确保下载并使用 `22.04.1` 版本。
+
+```bash
+wget https://old-releases.ubuntu.com/releases/jammy/ubuntu-22.04.1-live-server-amd64.iso
+```
+
+### 2. 内核升级
+
+将 Ubuntu 22.04.1 的内核升级至 `6.8.0-49-generic`，可按照以下步骤进行：
+
+运行以下命令安装内核并自动重启。
+> **提示：** 脚本中已包含重启命令，若需手动重启，请注释相关行。
+> 
+> 内核安装完成之后，请进一步检查grub的配置文件，确保默认启动内核版本为6.8.0-49-generic。
+
+```bash
+cd 0_arc_driver
+bash ./install_kernel.sh
+```
+
+### 3. Arc GPU 驱动安装
+重启完成后，请检查当前内核版本是否为 `6.8.0-49-generic`。
+```bash
+uname -r
+```
+
+## 3. Arc GPU 驱动安装
+
+#### 3.1 加载离线 APT 源
+
+```bash
+cd 0_arc_driver
+bash ./prepare_apt.sh
+```
+
+#### 3.2 安装 Arc GPU 驱动并重启
+
+> **提示：** 脚本中已包含重启命令，若需手动重启，请注释相关行。
+
+```bash
+bash ./install_arc_driver.sh
+```
+
+---
+
+## 选项2: 在线Kernel升级以及Arc GPU Driver安装(在线场景)
+
+### 1. 操作系统准备
+
+安装操作系统：Ubuntu 22.04.1 (x86_64)。
+
+> **注意：** 请确保下载并使用 `22.04.1` 版本。
+
+```bash
+wget https://old-releases.ubuntu.com/releases/jammy/ubuntu-22.04.1-live-server-amd64.iso
+```
+
+### 2.升级内核并重启
+
+将 Ubuntu 22.04.1 的内核升级至 `6.8.0-49-generic`，可按照以下步骤进行：
+
+```shell
+
+sudo apt install -y linux-image-6.8.0-49-generic linux-modules-6.8.0-49-generic linux-modules-extra-6.8.0-49-generic
+
+```
+
+内核安装完成之后，请进一步检查grub的配置文件，确保默认启动内核版本为6.8.0-49-generic。
+
+```bash
+sudo reboot
+```
+
+重启完成后，请检查当前内核版本是否为 `6.8.0-49-generic`。
+```bash
+uname -r
+```
+
+
+### 3.Arc GPU驱动安装
+
+请使用如下指令安装GPU驱动
 
 ```bash
 # Add Intel GPU out of tree driver repository
@@ -47,9 +136,8 @@ sudo gpasswd -a ${USER} render
 newgrp render
 ```
 
-## 选项2: 离线安装操作系统和GPU驱动
 
-
+---
 
 ## 选项3: 使用Clonezilla恢复硬盘镜像
 
@@ -105,7 +193,12 @@ sudo umount /mnt/media
 
 在需要安装的机器上，使用`步骤1`中制作的Clonezilla live启动U盘，启动Clonezilla live，并按照[CloneZilla官方教程中的恢复步骤](https://clonezilla.org/fine-print-live-doc.php?path=clonezilla-live/doc/02_Restore_disk_image)，使用`步骤2`中制作的数据U盘，恢复操作系统镜像。
 
-## 验证GPU驱动是否正常工作
+
+---
+
+## Arc GPU驱动验证
+
+验证GPU驱动是否正常工作
 
 1. 确保系统启动时，i915驱动没有报错: `sudo dmesg | grep -i 915`
 
