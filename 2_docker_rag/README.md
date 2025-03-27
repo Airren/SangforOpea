@@ -57,11 +57,19 @@ sudo docker compose version
 
 #### 2.1.1 根据环境的Intel Arc GPU的数量，设置TP
 
+> 建议设置TP=4，运行32B模型
+
 ```bash
 export TENSOR_PARALLEL_SIZE=4 # 对应GPU数量
 ```
+#### 2.1.2 如果在8卡的机器上运行两个4卡32B模型的实例，需要设置GPU的亲和性
 
-#### 2.1.2 根据实际GPU显存情况，选择模型
+```bash
+# 使用0-3 GPU
+export GPU_AFFINITY="0,1,2,3"
+```
+
+#### 2.1.3 根据实际GPU显存情况，选择模型
 
 目前离线安装包提供的模型有：
 
@@ -80,7 +88,7 @@ export TENSOR_PARALLEL_SIZE=4 # 对应GPU数量
 export LLM_MODEL_ID=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
 ```
 
-#### 2.1.2 量化设置
+#### 2.1.4 量化设置
 
 ```sh
 export QUANTIZATION=fp8
@@ -126,7 +134,7 @@ sudo -E docker compose ps
 
 ### 3.2 使用 cURL 进行简单接口验证
 
-将模型服务启动后，可以使用 cURL 发送请求，验证服务是否正常。
+将模型服务启动后，可以使用 cURL 发送请求，验证vllm服务是否正常。此验证不包含RAG其他组件的调用，仅对LLM模型进行验证。
 
 
 ```bash
@@ -137,7 +145,13 @@ sudo -E docker compose ps
       \"max_tokens\": 256}"
 ```
 
-### 3.2 查看 Docker 日志排查 (可选)
+### 3.2 通过chatQna的UI验证RAG功能的完整性
+
+通过访问 http://${host-ip}:80,可以在Web UI页面测试RAG功能。
+
+
+
+### 3.3 查看 Docker 日志排查 (可选)
 
 如果请求失败，排查日志：
 
@@ -146,7 +160,7 @@ source setenv.sh
 sudo -E docker compose logs vllm-service
 ```
 
-### 3.3 停止LLM服务
+### 3.4 停止LLM服务
 
 ```bash
 bash stop_llm.sh

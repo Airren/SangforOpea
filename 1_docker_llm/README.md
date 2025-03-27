@@ -57,11 +57,19 @@ sudo docker compose version
 
 #### 2.1.1 根据环境的Intel Arc GPU的数量，设置TP
 
+> 建议设置TP=4，运行32B模型
+
 ```bash
 export TENSOR_PARALLEL_SIZE=4 # 对应GPU数量
 ```
+#### 2.1.2 如果在8卡的机器上运行两个4卡32B模型的实例，需要设置GPU的亲和性
 
-#### 2.1.2 根据实际GPU显存情况，选择模型
+```bash
+# 使用0-3 GPU
+export GPU_AFFINITY="0,1,2,3"
+```
+
+#### 2.1.3 根据实际GPU显存情况，选择模型
 
 目前离线安装包提供的模型有：
 
@@ -80,7 +88,7 @@ export TENSOR_PARALLEL_SIZE=4 # 对应GPU数量
 export LLM_MODEL_ID=deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
 ```
 
-#### 2.1.2 量化设置
+#### 2.1.4 量化设置
 
 ```sh
 export QUANTIZATION=fp8
