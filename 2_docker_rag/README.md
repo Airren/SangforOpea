@@ -140,7 +140,7 @@ sudo -E docker compose ps
 
 ### 3.2 使用 cURL 进行简单接口验证
 
-将模型服务启动后，可以使用 cURL 发送请求，验证服务是否正常。
+将模型服务启动后，可以使用 cURL 发送请求，验证vllm服务是否正常。此验证不包含RAG其他组件的调用，仅对LLM模型进行验证。
 
 
 ```bash
@@ -151,7 +151,13 @@ sudo -E docker compose ps
       \"max_tokens\": 256}"
 ```
 
-### 3.2 查看 Docker 日志排查 (可选)
+### 3.2 通过chatQna的UI验证RAG功能的完整性
+
+通过访问 http://${host-ip}:80,可以在Web UI页面测试RAG功能。
+
+
+
+### 3.3 查看 Docker 日志排查 (可选)
 
 如果请求失败，排查日志：
 
@@ -160,7 +166,7 @@ source setenv.sh
 sudo -E docker compose logs vllm-service
 ```
 
-### 3.3 停止LLM服务
+### 3.4 停止LLM服务
 
 ```bash
 bash stop_llm.sh

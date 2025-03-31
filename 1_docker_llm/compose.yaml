@@ -4,12 +4,12 @@ services:
     container_name: ${LLM_CONTAINER_NAME}
     ports:
       - "9009:80"
-    ipc: host
+    privileged: true
     devices:
       - "/dev/dri:/dev/dri"
     volumes:
-      - "${MODELS_PATH}:/data"
-    shm_size: ${SHM_SIZE:-8g}
+      - "${OPEA_DATA_DIR}/models:/data"
+    shm_size: ${SHM_SIZE:-16g}
     environment:
       no_proxy: ${no_proxy}
       http_proxy: ${http_proxy}
@@ -39,6 +39,7 @@ services:
       export TORCH_LLM_ALLREDUCE=0 &&
       export CCL_SAME_STREAM=1 &&
       export CCL_BLOCKING_WAIT=0 &&
+      export ZE_AFFINITY_MASK=$GPU_AFFINITY &&
       source /opt/intel/1ccl-wks/setvars.sh &&
       python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
       --served-model-name $LLM_MODEL_ID \
