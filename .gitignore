@@ -1,5 +1,11 @@
-docker_deb/
 docker_images/
 models/
+apt_packages/
+nltk_data/
+kernel_deb/
+
 docker_images
 models
+apt_packages
+nltk_data
+kernel_deb

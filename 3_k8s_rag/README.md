@@ -7,7 +7,7 @@
 - **操作系统**：Ubuntu 22.04 (x86_64)
 - **GPU**：Intel Arc GPU (A770)
 - **权限**：确保具备 `sudo` 权限
-- **安装包**：通过Intel的IPS下载离线部署资源包 Intel_Arc_OPEA_ChatQnA_K8s_Offline_Deployment.tar.gz
+- **安装包**：通过Intel的IPS下载离线部署资源包 opea-oneclick-release-ubuntu22.04.1-v0.1-offline-sangfor.tar.gz
 
 ---
 
@@ -18,14 +18,20 @@
 ```bash
 # 请根据实际Intel提供的下载方式下载离线安装包,并解压
 
-tar -xvf Intel_Arc_OPEA_ChatQnA_K8s_Offline_Deployment.tar.gz
+tar -xvf opea-oneclick-release-ubuntu22.04.1-v0.1-offline-sangfor.tar.gz
 cd SangforOpea/3_K8s_rag
 
 ```
 
 ## **第一步: 安装操作系统，内核，GPU驱动**
 
-请参见[操作系统安装](../README_OS_Install.md).
+[环境准备与驱动安装](../0_arc_driver/README.md)
+
+> [!IMPORTANT]
+> ⚠️ **Important**  
+> 请务必阅读这个部分，否则可能会影响项目运行！
+> 开始部署前请阅读[环境准备与驱动安装](../0_arc_driver/README.md)部分，确保您的环境符合要求。
+
 
 ## **第二步: 安装Kubernetes**
 

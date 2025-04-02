@@ -4,10 +4,15 @@
 
 ## 前置条件
 
-- **操作系统**：Ubuntu 24.04 (x86_64)
+- **操作系统**：Ubuntu 22.04 (x86_64)
 - **GPU**：Intel Arc GPU (A750/A770/B580)
 - **权限**：确保具备 `sudo` 权限
-- **安装包**：通过Intel的IPS下载离线部署资源包 Intel_Arc_LLM_Offline_Deployment.tar.gz
+- **安装包**：通过Intel的IPS下载离线部署资源包 opea-oneclick-release-ubuntu22.04.1-v0.1-offline-sangfor.tar.gz
+
+> [!IMPORTANT]
+> ⚠️ **Important**  
+> 请务必阅读这个部分，否则可能会影响项目运行！
+> 开始部署前请阅读[环境准备与驱动安装](../0_arc_driver/README.md)部分，确保您的环境符合要求。
 
 ---
 
@@ -18,7 +23,7 @@
 ```bash
 # 请根据实际Intel提供的下载方式下载离线安装包,并解压
 
-tar -xvf Intel_Arc_LLM_Offline_Deployment.tar.gz
+tar -xvf opea-oneclick-release-ubuntu22.04.1-v0.1-offline-sangfor.tar.gz
 
 ```
 
@@ -35,7 +40,23 @@ cd SangforOpea/1_docker_llm
 bash install_docker.sh
 ```
 
-### 1.2 可以手动验证 Docker (可跳过)
+### 1.2 验证Docker的可用性
+
+#### 查看docker 运行状态
+
+确保 Docker Daemon 正常启动
+```bash
+sudo systemctl status docker
+```
+如果docker未启动，请用以下命令启动docker并查状态。
+
+```shell
+sudo systemctl start docker
+sudo systemctl status docker
+```
+
+
+#### 查看docker 版本
 
 ```bash
 sudo docker version
@@ -44,7 +65,6 @@ sudo docker compose version
 
 ### **注意事项**
 
-- 确保 Docker Daemon 正常启动，`sudo systemctl status docker`。
 - 可考虑将普通用户加入 `docker` 组，免去频繁输入 sudo： `sudo usermod -aG docker $USER`
 
 ---
