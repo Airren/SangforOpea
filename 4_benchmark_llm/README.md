@@ -13,8 +13,29 @@
 
 ## 准备工作：安装所需要相应的工具
 
-TBD
+按照以下命令安装`cpupower`和`xpu-smi`
 
+```
+cd SangforOpea/4_benchmark_llm/
+bash install_xpu.sh
+```
+上述命令执行完成后可以分别查看`cpupower`和`xpu-smi`的版本信息。
+
+```
+~$ xpu-smi --version
+CLI:
+    Version: 1.2.41.20250414
+    Build ID: 002a9706
+
+Service:
+    Version: 1.2.41.20250414
+    Build ID: 002a9706
+    Level Zero Version: 1.14.0
+
+~$ cpupower --version
+cpupower 6.8.12
+
+```
 
 **注意：执行下列步骤前，确保已经按照[docker环境文档](../2_docker_rag)或者[K8s环境文档](../3_k8s_rag)设置的相关环境。**
 
